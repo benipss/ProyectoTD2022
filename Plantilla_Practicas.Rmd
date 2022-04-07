@@ -1,0 +1,114 @@
+---
+title: "PROYECTO TD 2022"
+subtitle: Tratamiento de Datos. Grado en Ciencia de Datos- UV
+author: "Benito Pastor Sánchez, Carlos Heras Pardo, Hugo Toledo Escrivá y Manuel Perez Perdomo"
+#Pone la fecha de generación del documento
+date:  "`r Sys.Date()`"  #Pondría la fecha del día actual
+# Para que en lugar de "Contents" ponga "Indice" al incluir la tabla de contenido
+
+params:
+  lang: ES
+lang: "`r switch(params$lang, ES = 'es-ES', EN = 'en-US')`"
+
+# Por defecto se generará un salida html
+# Si si quieres otras salidas o varias de ellas descomenta lo que proceda
+output:
+# Salida pdf. Si se incluye código en LaTex necesitarás tener instalado un compilador de Latex
+  pdf_document:
+    toc: yes      # Tabla de contenido (índice)
+    toc_depth: 3  # Número de niveles de la tabla de contenido (índice) # 1, ##2,###3
+#    number_sections: yes # Numeración de las secciones
+# Salida html, 
+  html_document:
+    echo: yes
+    number_sections: yes
+    theme: lumen    # Aspecto y estilo,otras opciones: cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, and yeti 
+    toc: yes
+# Salida html_notebook, como html, pero con algunas opciones de visualización
+  html_notebook:
+    echo: yes
+    number_sections: yes
+    toc: yes
+# Esto nos permite traducir estas etiquetas para que aparezcan en otro idioma en caso de que se usen en el documento para referenciar a figuras, tablas, etc
+language:
+  label:
+    fig: 'Figura '
+    tab: 'Tabla '
+    eq: 'Ecuación '
+    thm: 'Teorema '
+    lem: 'Lema '
+    def: 'Definición '
+    cor: 'Corolario '
+    prp: 'Proposición '
+    exm: 'Ejemplo '
+    exr: 'Ejercicio '
+    proof: 'Demostración. '
+    remark: 'Nota: '
+    solution: 'Solución. '
+---
+
+
+
+
+
+
+
+
+
+
+
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
+
+
+# CONFIGURACIÓN GENERAL
+library(knitr)
+options(width = 100)
+
+# Opciones generales de los chucks. Se utilizarán salvo cambios en el chunk
+opts_chunk$set(echo=F, message = F, error = F, warning = F, comment = NA, fig.align = 'center', dpi = 200, tidy = F, cache.path = '.cache/', fig.path = './figura/')
+
+# Opciones generales de dígitos cuando se incluyen tablas
+#options(xtable.type = 'html')
+knit_hooks$set(inline = function(x) {
+  
+  if(is.numeric(x)) {
+    round(x, getOption('digits'))
+  } else {
+    paste(as.character(x), collapse = ', ')
+  }
+})
+#knit_hooks$set(plot = knitr:::hook_plot_html)
+```
+
+# Instalación automática de paquetes
+
+```{r}
+
+# Especificamos las librerías necesarias en esta lista
+
+packages = c("tidyverse","knitr")
+
+#use this function to check if each package is on the local machine
+#if a package is installed, it will be loaded
+#if any are not, the missing package(s) will be installed and loaded
+package.check <- lapply(packages, FUN = function(x) {
+  if (!require(x, character.only = TRUE)) {
+    install.packages(x, dependencies = TRUE,repos='http://cran.rediris.es')
+  }
+  library(x, character.only = TRUE)
+})
+
+#verify they are loaded
+search()
+
+```
+
+
+# Introducción del trabajo
+
+Breve introducción donde se indica el contenido del documento:
+
+" El objetivo de este proyecto es abordar un problema de tratamiento de datos que abarque todas las etapas que estamos estudiando a lo largo del curso. En este proyecto analizaremos los datos recogidos por sensores que monitorizan el nivel de ruido en diferentes localizaciones del barrio de Ruzafa. Los datos están disponibles en la plataforma de datos abiertos del Ayuntamiento de Valencia, dentro de la categoría medio ambiente"
+
+
+
