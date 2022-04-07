@@ -86,7 +86,7 @@ knit_hooks$set(inline = function(x) {
 
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("tidyverse","knitr")
+packages = c("tidyverse","knitr","dplyr")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -200,4 +200,9 @@ n <- read_csv("data/ff8678b6-748e-4908-ab5b-9c7ff567da61.csv",
 
 ```
 
+#Fusion de datos.
+
+```{r}
+fusion <- union(a,b) %>% union(c) %>% union(d)%>% union(e)%>% union(f)%>% union(g)%>% union(h)%>% union(i)%>% union(j) %>% union(k)%>% union(l)%>% union(m)%>% union(n)
+```
 
