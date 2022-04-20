@@ -110,7 +110,7 @@ Breve introducción donde se indica el contenido del documento:
 
 " El objetivo de este proyecto es abordar un problema de tratamiento de datos que abarque todas las etapas que estamos estudiando a lo largo del curso. En este proyecto analizaremos los datos recogidos por sensores que monitorizan el nivel de ruido en diferentes localizaciones del barrio de Ruzafa. Los datos están disponibles en la plataforma de datos abiertos del Ayuntamiento de Valencia, dentro de la categoría medio ambiente"
 
-#Importacion de los datos.
+# Importacion de los datos.
 
 ```{r}
 a <- read_csv("data/1b41d86b-3939-488b-9035-92d851245924.csv", 
@@ -200,9 +200,20 @@ n <- read_csv("data/ff8678b6-748e-4908-ab5b-9c7ff567da61.csv",
 
 ```
 
-#Fusion de datos.
+# Fusion de datos.
 
 ```{r}
 fusion <- union(a,b) %>% union(c) %>% union(d)%>% union(e)%>% union(f)%>% union(g)%>% union(h)%>% union(i)%>% union(j) %>% union(k)%>% union(l)%>% union(m)%>% union(n)
+```
+
+
+# Acondicionamiento de los datos.
+
+```{r}
+#Eliminamos las columnas 3, 4 y 5.
+fusion <- fusion %>% select(-(3:5))
+#Corregimos la comulna de identificacion "_id".
+numero <- nrow(fusion)
+fusion <- fusion %>% mutate("id" = c(1:numero)) %>% select(-(1))
 ```
 
