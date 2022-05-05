@@ -86,7 +86,7 @@ knit_hooks$set(inline = function(x) {
 
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("tidyverse","knitr","dplyr")
+packages = c("tidyverse","knitr","dplyr","ggplot2")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -144,5 +144,12 @@ fusion <- fusion %>% select(-(3:5))
 #Corregimos la comulna de identificacion "_id".
 numero <- nrow(fusion)
 fusion <- fusion %>% mutate("id" = c(1:numero)) %>% select(-(1))
+```
+
+```{r}
+summary(fusion)
+glimpse(fusion)
+boxplot(fusion$LAeq,fusion$LAeq_d,fusion$LAeq_den,fusion$LAeq_e,fusion$LAeq_n)
+
 ```
 
