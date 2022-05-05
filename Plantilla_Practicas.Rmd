@@ -197,7 +197,6 @@ n <- read_csv("data/ff8678b6-748e-4908-ab5b-9c7ff567da61.csv",
          LAeq_den = col_number(), LAeq_e = col_number(), 
          LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
 
-
 ```
 
 # Fusion de datos.
