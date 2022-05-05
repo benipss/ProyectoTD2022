@@ -112,97 +112,27 @@ Breve introducción donde se indica el contenido del documento:
 
 # Importacion de los datos.
 
-```{r}
-a <- read_csv("data/1b41d86b-3939-488b-9035-92d851245924.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-b <- read_csv("data/3b2fe345-08fc-49d7-85c8-8cccf6a7e814.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-c <- read_csv("data/5a050cef-1107-4b3b-8e61-5daf5cfb2ca4.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-d <- read_csv("data/6fa5210b-f9c7-47c8-9d1f-ddb7568f62de.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-e <- read_csv("data/64e4b7b4-e633-4753-b0ef-a57d785076f8.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-f <- read_csv("data/75a878a9-2bd9-4619-98ec-3224be867c65.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-g <- read_csv("data/784f4732-abc5-41b1-857b-42decb306643.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-h <- read_csv("data/8058f1a5-c605-4baa-afff-2f638efb767f.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-i <- read_csv("data/a54fb175-8013-460a-a2f0-22de7a210d7a.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-j <- read_csv("data/b26d42ae-2be9-481a-9b79-71392d9e80bd.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-k <- read_csv("data/d842601d-35b4-4b88-96f7-42e8f68e1b74.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-l <- read_csv("data/e580f492-a2f6-4305-af24-f4c4d05b911c.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-m <- read_csv("data/ea008906-e06a-4c72-9fe6-3238e212aae4.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-n <- read_csv("data/ff8678b6-748e-4908-ab5b-9c7ff567da61.csv", 
-     col_types = cols(`_id` = col_integer(), 
-         LAeq = col_number(), LAeq_d = col_number(), 
-         LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))
-
-```
-
-# Fusion de datos.
 
 ```{r}
-fusion <- union(a,b) %>% union(c) %>% union(d)%>% union(e)%>% union(f)%>% union(g)%>% union(h)%>% union(i)%>% union(j) %>% union(k)%>% union(l)%>% union(m)%>% union(n)
+ruta <- "data/"
+f <- list.files(path= "./data", pattern = "csv$") 
+fusion <- read_csv(paste(ruta,f[1], sep = ""), 
+     col_types = cols(`_id` = col_integer(), 
+         LAeq = col_number(), LAeq_d = col_number(), 
+         LAeq_den = col_number(), LAeq_e = col_number(), 
+         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))%>% mutate(calle = 1)
+     
+for (i in 2:length(f)){
+fichero2 <- read_csv(paste(ruta,f[i], sep = ""),
+       col_types = cols(`_id` = col_integer(), 
+           LAeq = col_number(), LAeq_d = col_number(), 
+           LAeq_den = col_number(), LAeq_e = col_number(), 
+           LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d"))) %>% mutate(calle = i) 
+
+fusion <- union(fusion, fichero2)
+ 
+}
+
 ```
 
 
