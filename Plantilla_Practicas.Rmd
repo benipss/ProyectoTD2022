@@ -86,7 +86,7 @@ knit_hooks$set(inline = function(x) {
 
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("tidyverse","knitr","dplyr","ggplot2")
+packages = c("tidyverse","knitr","dplyr","mice")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -146,10 +146,64 @@ numero <- nrow(fusion)
 fusion <- fusion %>% mutate("id" = c(1:numero)) %>% select(-(1))
 ```
 
+
+
+
+# Detección de NA.
+
 ```{r}
-summary(fusion)
-glimpse(fusion)
-boxplot(fusion$LAeq,fusion$LAeq_d,fusion$LAeq_den,fusion$LAeq_e,fusion$LAeq_n)
+#Calculamos el número de NA que existen en nustro conjunto de observaciones.
+num_na <- sum(complete.cases(fusion) == TRUE)
+num_na
+
+#Calculamos el porcentaje de NA respecto de todos los datos.
+100 - ((num_na/nrow(fusion))*100)
+
+#Repetimos el proceso unicamente teniendo en cuenta las variables numéricas.
+df_var_num <- fusion %>% select(2:6)
+sum(complete.cases(df_var_num) == TRUE)
+```
+
+Ya que el numero de observaciones con valores perdidos es muy bajo y estos pertenecen a variables númericas, hemos decidido sustituirlos por un estadístico "robusto" como es la media.
+
+```{r}
+#Imputamos los NA.
+df_var_num <- mice(df_var_num,m=5,method="mean")
+summary(df_var_num)
+
+#Transformamos la lista que nos devuelve el mice a un data frame de nuevo
+df_var_num <- complete(df_var_num)
+
+#Comprobamos que hayamos imputado correctamente todos los datos 
+sum(complete.cases(df_var_num) == TRUE) == nrow(df_var_num)
+
+```
+
+# Analisis Univariante
+
+```{r}
+# Aplicamos la regla boxplot para eliminar los datos considerados outliers.
+
+reglaboxplot <- function(x,na.rm=T) { 
+  q3 = quantile(x,0.75,na.rm = na.rm)
+  q1 = quantile(x,0.25,na.rm = na.rm)
+  rangoiqr = IQR(x,na.rm = na.rm)
+  outliers = (x > q3+1.5*rangoiqr) | (x < q1-1.5*rangoiqr)
+  return(outliers)
+}
+#Escogemos unicamente las variables numericas de data frame.
+A <-lapply(df_var_num, reglaboxplot)
+nombre_var <- names(df_var_num)
+
+
+#Contamos los outliers de todo el dataframe.
+numero = 0
+for (x in 1:length(nombre_var)){
+numero1 = sum(A[[nombre_var[x]]])
+numero = numero + numero1
+}
+numero
+
 
 ```
 
