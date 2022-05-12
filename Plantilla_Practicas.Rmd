@@ -1,51 +1,19 @@
 ---
 title: "PROYECTO TD 2022"
-subtitle: Tratamiento de Datos. Grado en Ciencia de Datos- UV
 author: "Benito Pastor Sánchez, Carlos Heras Pardo, Hugo Toledo Escrivá y Manuel Perez Perdomo"
-#Pone la fecha de generación del documento
-date:  "`r Sys.Date()`"  #Pondría la fecha del día actual
-# Para que en lugar de "Contents" ponga "Indice" al incluir la tabla de contenido
-
-params:
-  lang: ES
-lang: "`r switch(params$lang, ES = 'es-ES', EN = 'en-US')`"
-
-# Por defecto se generará un salida html
-# Si si quieres otras salidas o varias de ellas descomenta lo que proceda
+date: "`r Sys.Date()`"
 output:
-# Salida pdf. Si se incluye código en LaTex necesitarás tener instalado un compilador de Latex
-  pdf_document:
-    toc: yes      # Tabla de contenido (índice)
-    toc_depth: 3  # Número de niveles de la tabla de contenido (índice) # 1, ##2,###3
-#    number_sections: yes # Numeración de las secciones
-# Salida html, 
+  # pdf_document:
+  #   toc: yes
+  #   toc_depth: 3
+  #   number_sections: no
   html_document:
     echo: yes
-    number_sections: yes
-    theme: lumen    # Aspecto y estilo,otras opciones: cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, and yeti 
+    number_sections: no
+    theme: lumen
     toc: yes
-# Salida html_notebook, como html, pero con algunas opciones de visualización
-  html_notebook:
-    echo: yes
-    number_sections: yes
-    toc: yes
-# Esto nos permite traducir estas etiquetas para que aparezcan en otro idioma en caso de que se usen en el documento para referenciar a figuras, tablas, etc
-language:
-  label:
-    fig: 'Figura '
-    tab: 'Tabla '
-    eq: 'Ecuación '
-    thm: 'Teorema '
-    lem: 'Lema '
-    def: 'Definición '
-    cor: 'Corolario '
-    prp: 'Proposición '
-    exm: 'Ejemplo '
-    exr: 'Ejercicio '
-    proof: 'Demostración. '
-    remark: 'Nota: '
-    solution: 'Solución. '
 ---
+
 
 ```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 
@@ -55,8 +23,18 @@ library(knitr)
 options(width = 100)
 
 # Opciones generales de los chucks. Se utilizarán salvo cambios en el chunk
-opts_chunk$set(echo=F, message = F, error = F, warning = F, comment = NA, fig.align = 'center', dpi = 200, tidy = F, cache.path = '.cache/', fig.path = './figura/')
-
+knitr::opts_chunk$set(
+	echo = TRUE,
+	error = F,
+	fig.align = "center",
+	fig.path = "./figura/",
+	message = FALSE,
+	warning = FALSE,
+	cache.path = ".cache/",
+	comment = NA,
+	dpi = 200,
+	tidy = F
+)
 # Opciones generales de dígitos cuando se incluyen tablas
 #options(xtable.type = 'html')
 knit_hooks$set(inline = function(x) {
@@ -72,11 +50,11 @@ knit_hooks$set(inline = function(x) {
 
 # Instalación automática de paquetes
 
-```{r}
+```{r warning=FALSE, include=FALSE}
 
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("tidyverse","knitr","dplyr","mice")
+packages = c("tidyverse","knitr","dplyr","mice","ggplot2")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -136,12 +114,12 @@ fusion <- fusion %>% mutate("id" = c(1:numero)) %>% select(-(1))
 # Detección de NA.
 
 ```{r}
-#Calculamos el número de NA que existen en nustro conjunto de observaciones
-num_na <- sum(complete.cases(fusion) == TRUE)
+#Calculamos el número de NA que existen en nustro conjunto de observaciones.
+num_nona <- sum(complete.cases(fusion) == TRUE)
+num_na <- nrow(fusion) - num_nona
 num_na
-
 #Calculamos el porcentaje de NA respecto de todos los datos.
-100 - ((num_na/nrow(fusion))*100)
+((num_na/nrow(fusion))*100)
 
 #Repetimos el proceso unicamente teniendo en cuenta las variables numéricas.
 df_var_num <- fusion %>% select(2:6)
@@ -150,7 +128,7 @@ sum(complete.cases(df_var_num) == TRUE)
 
 Ya que el numero de observaciones con valores perdidos es muy bajo y estos pertenecen a variables númericas, hemos decidido sustituirlos por un estadístico "robusto" como es la media.
 
-```{r}
+```{r include=FALSE}
 #Imputamos los NA.
 df_var_num <- mice(df_var_num,m=5,method="mean")
 summary(df_var_num)
@@ -175,6 +153,7 @@ reglaboxplot <- function(x,na.rm=T) {
   outliers = (x > q3+1.5*rangoiqr) | (x < q1-1.5*rangoiqr)
   return(outliers)
 }
+
 #Escogemos unicamente las variables numericas de data frame.
 A <-lapply(df_var_num, reglaboxplot)
 nombre_var <- names(df_var_num)
@@ -188,5 +167,45 @@ numero = numero + numero1
 }
 numero
 
+#Calculamos el porcentaje de outliers del conjunto de datos.
+100 * (numero / (nrow(df_var_num) * ncol(df_var_num))) 
 
 ```
+
+Podemos observar que el porcentaje de outliers sobre todo el conjunto de datos es del 4.27%.
+
+Procedemos a representar los outliers mediante un gráfico boxplot para poder visualizarlo mejor.
+
+```{r}
+#Transformamos el conjunto de datos en un conjunto tidy para poder representar las variables mediante la función pivor_longer:
+df_var_num_tidy <- df_var_num %>% pivot_longer(cols=c(1:ncol(df_var_num)),names_to= "Nombre_var")
+
+df_var_num_tidy %>% ggplot(aes(x=Nombre_var, y = value, col = Nombre_var)) + geom_boxplot()  
+
+```
+
+Procedemos a calcular los siguientes estadísticos:
+
+-   Media
+
+-   Mediana
+
+-   Desviación Típica
+
+-   IQR (Rango Intercuartil)
+
+```{r}
+
+df_estadisticos <- df_var_num %>% summarise(media = mean(df_var_num[,1]),sd = sd(df_var_num[,1]),mediana =  median(df_var_num[,1]),IQR = IQR(df_var_num[,1])) %>%  round(2)
+
+for (i in 2:ncol(df_var_num)){
+estadisticos <-  df_var_num %>% summarise(media = mean(df_var_num[,i]),sd = sd(df_var_num[,i]),mediana =  median(df_var_num[,i]),IQR = IQR(df_var_num[,i])) %>% round(2)
+ df_estadisticos <- union(df_estadisticos, estadisticos)
+}
+
+df_estadisticos <- df_estadisticos %>% mutate("Nom_Var" = colnames(df_var_num)) %>% kable()
+
+df_estadisticos
+```
+
+
