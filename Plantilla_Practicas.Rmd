@@ -47,16 +47,6 @@ language:
     solution: 'Solución. '
 ---
 
-
-
-
-
-
-
-
-
-
-
 ```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 
 
@@ -103,7 +93,6 @@ search()
 
 ```
 
-
 # Introducción del trabajo
 
 Breve introducción donde se indica el contenido del documento:
@@ -111,7 +100,6 @@ Breve introducción donde se indica el contenido del documento:
 " El objetivo de este proyecto es abordar un problema de tratamiento de datos que abarque todas las etapas que estamos estudiando a lo largo del curso. En este proyecto analizaremos los datos recogidos por sensores que monitorizan el nivel de ruido en diferentes localizaciones del barrio de Ruzafa. Los datos están disponibles en la plataforma de datos abiertos del Ayuntamiento de Valencia, dentro de la categoría medio ambiente"
 
 # Importacion de los datos.
-
 
 ```{r}
 ruta <- "data/"
@@ -135,7 +123,6 @@ fusion <- union(fusion, fichero2)
 
 ```
 
-
 # Acondicionamiento de los datos.
 
 ```{r}
@@ -145,9 +132,6 @@ fusion <- fusion %>% select(-(3:5))
 numero <- nrow(fusion)
 fusion <- fusion %>% mutate("id" = c(1:numero)) %>% select(-(1))
 ```
-
-
-
 
 # Detección de NA.
 
@@ -206,4 +190,3 @@ numero
 
 
 ```
-
