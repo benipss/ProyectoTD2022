@@ -105,7 +105,7 @@ fusion <- union(fusion, fichero2)
 
 ```{r}
 #Eliminamos las columnas 3, 4 y 5.
-fusion <- fusion %>% select(-(3:5))
+fusion <- fusion %>% select(-(3:5)) %>% select(-1)
 #Corregimos la comulna de identificacion "_id".
 numero <- nrow(fusion)
 fusion <- fusion %>% mutate("id" = c(1:numero)) %>% select(-(1))
@@ -122,7 +122,7 @@ num_na
 ((num_na/nrow(fusion))*100)
 
 #Repetimos el proceso unicamente teniendo en cuenta las variables numéricas.
-df_var_num <- fusion %>% select(2:6)
+df_var_num <- fusion %>% select(1:5)
 sum(complete.cases(df_var_num) == TRUE)
 ```
 
@@ -225,4 +225,24 @@ matriz_Corr_spearman
 #Representación de la matriz de correlación:
 ggcorr(matriz_Corr_spearman)
 ```
+
+# Contextualización de los datos.
+
+## Distribucion del ruido a lo largo de los años en las 3 franjas horarias (7h-19h,19h-23h,23h-7h)
+
+```{r}
+#Seleccionamos las columnas necesarias:
+año <- fusion %>% select("dateObserved") %>% separate(dateObserved,c("año","mes","dia"),sep = "-") %>% select(año)
+
+P1 <- cbind(df_var_num,año)
+P1 <- P1 %>% group_by(año) %>% 
+  summarise(media_d = mean(LAeq_d),media_e = mean(LAeq_e),media_n = mean(LAeq_n)) %>% pivot_longer(cols = c(2:4), names_to = "Medias") 
+
+ggplot(data=P1, aes(x=año, y=value, group=Medias)) +
+  geom_line(aes(linetype=Medias,color=Medias))+
+  geom_point(aes(shape=Medias,color=Medias))
+
+```
+Conclusión : El ruido tomando como año inicial en el que se empezaron a recoger datos (2020) hasta la actualidad (2022), ha aumentado considerablemente como podemos ver en la anterior gráfica, en la que la pendiente en el tramo de 2021 a 2022 se pronuncia claramente.
+
 
