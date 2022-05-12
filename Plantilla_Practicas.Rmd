@@ -54,7 +54,7 @@ knit_hooks$set(inline = function(x) {
 
 # Especificamos las librerías necesarias en esta lista
 
-packages = c("tidyverse","knitr","dplyr","mice","ggplot2")
+packages = c("tidyverse","knitr","dplyr","mice","ggplot2","GGally")
 
 #use this function to check if each package is on the local machine
 #if a package is installed, it will be loaded
@@ -208,4 +208,21 @@ df_estadisticos <- df_estadisticos %>% mutate("Nom_Var" = colnames(df_var_num)) 
 df_estadisticos
 ```
 
+# Análisis Bivariante
+
+Calculamos las matrices de covarianza (no acotada) y correlación (acotada), considerando todas las variables numéricas, para encontrar relaciones (lineales) entre variables.
+
+```{r}
+df_var_num %>% cov() %>% round(2)
+#Calculamos la matriz de correlación con el método de Pearson:
+matriz_Corr_pearson = df_var_num %>% cor(method="pearson") %>% round(2)
+matriz_Corr_pearson
+#Representación de la matriz de correlación:
+ggcorr(matriz_Corr_pearson)
+#Calculamos la matriz de correlación con el método de Spearman:
+matriz_Corr_spearman = df_var_num %>% cor(method="spearman") %>% round(2)
+matriz_Corr_spearman
+#Representación de la matriz de correlación:
+ggcorr(matriz_Corr_spearman)
+```
 
