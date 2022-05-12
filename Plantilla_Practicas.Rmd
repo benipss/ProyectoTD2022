@@ -136,7 +136,7 @@ fusion <- fusion %>% mutate("id" = c(1:numero)) %>% select(-(1))
 # Detección de NA.
 
 ```{r}
-#Calculamos el número de NA que existen en nustro conjunto de observaciones.
+#Calculamos el número de NA que existen en nustro conjunto de observaciones
 num_na <- sum(complete.cases(fusion) == TRUE)
 num_na
 
