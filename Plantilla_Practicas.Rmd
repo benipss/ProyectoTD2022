@@ -227,7 +227,7 @@ ggcorr(matriz_Corr_spearman)
 
 # Contextualización de los datos.
 
-## Distribucion del ruido a lo largo de los años en las 3 franjas horarias (7h-19h,19h-23h,23h-7h)
+## Distribucion del ruido a lo largo de los años en las 3 franjas horarias (7h-19h,19h-23h,23h-7h), incluyendo todas las calles.
 
 ```{r}
 #Seleccionamos las columnas necesarias:
@@ -249,12 +249,14 @@ Destacar también que en el segundo tramo (2021-2022) se pronuncia la pendiente 
 
 De la anterior gráfica tambén podemos extraer información respecto a las diferencias de ruido entre las tres franjas horarias, por lo que cabría destacar y es obvio en el tramo horario nocturno (23h-7h) los niveles de ruido son inferiores que los de las otras dos.
 
+## Evolución del ruido en época de fallas.
+
 ```{r}
 #Vamos a realizar un estudio de la evolución del ruido en época de fallas, y compararemos los resultados obtenidos con el gráfico anterior.
 
 #Escogemos el mes de marzo entero para asi ver la evolución:
-startdate <- as.Date("2021-03-01") 
-enddate <- as.Date("2021-03-31")
+startdate <- as.Date("2022-03-01") 
+enddate <- as.Date("2022-03-31")
 
 newdf_fallas <- df_var_num %>% mutate("Fecha" = fusion$dateObserved ) %>% mutate("Calle" = fusion$calle)
 
@@ -269,3 +271,11 @@ newdf_fallas <- cbind(newdf_fallas, dia)
 
 ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes(color=Calle))
 ```
+
+
+## Distribucion del ruido en cada una de las calles según el tramo horario.
+
+```{r}
+
+```
+
