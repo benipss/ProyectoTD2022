@@ -279,3 +279,53 @@ ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes
 
 ```
 
+
+## Índice medio de ruido día-tarde-noche a lo largo de los meses en los distintos años registrados.
+
+```{r}
+anyo_mes <- fusion %>% select("dateObserved") %>% separate(dateObserved,c("anyo","mes","dia"),sep = "-") %>% select(anyo,mes)
+
+P2 <- cbind(LAeq_den = df_var_num[,3],anyo_mes) 
+P2 <- P2 %>% group_by(mes,anyo) %>% summarise("LAeq_den" = mean(LAeq_den))
+
+ggplot(P2,aes(x = mes,y = LAeq_den,group = anyo)) +  geom_line(aes(col = anyo)) + geom_point()
+```
+
+Este gráfico representa el valor medio de la variable LAeq_den,que mide la molestia vinculada a la exposición al ruido,a lo largo de los meses de los años que se registran.El mes julio no se encuentra contabilizado en nuestro conjunto de datos por ello que no aparezca aquí.
+Como conclusiones,podemos sacar que el mes que más molestia generó en el año 2020 fue septiembre,al igual que en 2021 cosa que se justifica ya que fue Fallas durante ese mes y en lo que llevamos de 2022 el mes que más molestia ha generado es marzo de nuevo por Fallas.
+
+## Gráficos de dispersión que representan el nivel sonoro comparándolo en distintos años.
+
+```{r}
+P3 <- cbind(LAeq = df_var_num[,1],anyo_mes) %>% select(LAeq,anyo)
+LAeq_2020 <- P3 %>% filter(anyo == 2020) 
+LAeq_2021 <- P3 %>% filter(anyo == 2021) 
+LAeq_2022 <- P3 %>% filter(anyo == 2022)
+P3 <- cbind(LAeq_2020 = LAeq_2020[,1],LAeq_2021 = LAeq_2021[,1],LAeq_2022 = LAeq_2022[,1])
+P3 <- as.data.frame(P3)
+#Gráfico de dispersión de las variables LAeq en 2020 y 2021.
+P3 %>% ggplot(aes(x = LAeq_2020,y = LAeq_2021 )) + geom_point() + geom_smooth(method = lm,se = FALSE )
+
+#Gráfico de dispersión de las variables LAeq en 2021 y 2022.
+P3 %>% ggplot(aes(x = LAeq_2021,y = LAeq_2022 )) + geom_point() + geom_smooth(method = lm,se = FALSE )
+
+#Gráfico de dispersión de las variables LAeq en 2020 y 2022.
+P3 %>% ggplot(aes(x = LAeq_2020,y = LAeq_2022 )) + geom_point() + geom_smooth(method = lm,se = FALSE )
+```
+
+De estos tres gráficos,podemos sacar como conclusión que en el año 2022 es cuando mayor nivel sonoro ha habido,si lo comparamos sobretodo con 2020 ya que en esa gráfica es donde mayor diferencia hemos encontrado.También,ocurre algo similar con 2021 pero no a tal magnitud.Esto se debe,a que el confinamiento en 2020 tuvo un importante efecto en la sonoridad de las calles pero poco a poco,se está recuperando ese ruido gracias a las ausencias de restricciones por la pandemia de Covid-19.
+
+```{r}
+#Vamos a realizar un estudio de la evolución del ruido en época de fallas, y compararemos los resultados obtenidos con el gráfico anterior.
+#Escogemos el mes de marzo entero para asi ver la evolución:
+startdate <- as.Date("2021-03-01") 
+enddate <- as.Date("2021-03-31")
+newdf_fallas <- df_var_num %>% mutate("Fecha" = fusion$dateObserved ) %>% mutate("Calle" = fusion$calle)
+newdf_fallas <- newdf_fallas[which(newdf_fallas$Fecha >= startdate &
+           newdf_fallas$Fecha <= enddate),] %>% select(LAeq_den, Fecha, Calle)
+dia <- newdf_fallas %>% select("Fecha") %>% separate(Fecha,c("año","mes","dia"),sep = "-") %>% select(dia)
+newdf_fallas <- newdf_fallas %>% select(-"Fecha")
+newdf_fallas <- cbind(newdf_fallas, dia)
+ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes(color=Calle))
+```
+
