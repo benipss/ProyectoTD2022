@@ -247,7 +247,7 @@ ggplot(data=P1, aes(x=año, y=value, group=Tramos_Horarios)) +
 
 Conclusión : El ruido tomando como año inicial en el que se empezaron a recoger datos (2020) hasta la actualidad (2022), ha aumentado considerablemente como podemos ver en la anterior gráfica, en la que la pendiente en los tres horarios distintos en los tramos que van de 2020 a 2021 y de 2021 a 2022.
 
-Destacar también que en el segundo tramo (2021-2022) se pronuncia la pendiente es decir aumentan de manera exagerada los niveles de ruido para el tramo horario "nocturno" (23h-7h), esto puede indicarnos que el ocio nocturno ha aumentado como posible consecuencia de la desescalada en las restricciones de movilidad y ocio nocturno asi como de socialización impuestas por el gobierno de España a causa de la pandemia de la COVID-19.
+Destacar también que en el segundo tramo (2021-2022) se pronuncia la pendiente es decir aumentan de manera exagerada los niveles de ruido para el tramo horario "nocturno" (23h-7h), esto puede indicarnos que el ocio nocturno ha aumentado como posible consecuencia de la desescalada en las restricciones de movilidad y ocio nocturno asi como de socialización impuestas por el gobierno de España a causa de la pandemia de la COVID-19 y/o también puede deverse a que como bien sabemos el 2022 todavía no ha acabado y los niveles de ruido mas altos re recogen en la época de fallas que si que ha pasado, es posible que nos encontremos antes una pequeña alteración al no poderse mediar con el resto del año y así reucir esa pendiente.
 
 De la anterior gráfica tambén podemos extraer información respecto a las diferencias de ruido entre las tres franjas horarias, por lo que cabría destacar y es obvio en el tramo horario nocturno (23h-7h) los niveles de ruido son inferiores que los de las otras dos.
 
@@ -271,16 +271,8 @@ newdf_fallas <- newdf_fallas %>% select(-"Fecha")
 
 newdf_fallas <- cbind(newdf_fallas, dia)
 
-ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes(color=Calle))
+ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_barline(aes(color=Calle))
 ```
-
-
-## Distribucion del ruido en cada una de las calles según el tramo horario.
-
-```{r}
-
-```
-
 
 ## Índice medio de ruido día-tarde-noche a lo largo de los meses en los distintos años registrados.
 
@@ -293,8 +285,7 @@ P2 <- P2 %>% group_by(mes,anyo) %>% summarise("LAeq_den" = mean(LAeq_den))
 ggplot(P2,aes(x = mes,y = LAeq_den,group = anyo)) +  geom_line(aes(col = anyo)) + geom_point()
 ```
 
-Este gráfico representa el valor medio de la variable LAeq_den,que mide la molestia vinculada a la exposición al ruido,a lo largo de los meses de los años que se registran.El mes julio no se encuentra contabilizado en nuestro conjunto de datos por ello que no aparezca aquí.
-Como conclusiones,podemos sacar que el mes que más molestia generó en el año 2020 fue septiembre,al igual que en 2021 cosa que se justifica ya que fue Fallas durante ese mes y en lo que llevamos de 2022 el mes que más molestia ha generado es marzo de nuevo por Fallas.
+Este gráfico representa el valor medio de la variable LAeq_den,que mide la molestia vinculada a la exposición al ruido,a lo largo de los meses de los años que se registran.El mes julio no se encuentra contabilizado en nuestro conjunto de datos por ello que no aparezca aquí. Como conclusiones,podemos sacar que el mes que más molestia generó en el año 2020 fue septiembre,al igual que en 2021 cosa que se justifica ya que fue Fallas durante ese mes y en lo que llevamos de 2022 el mes que más molestia ha generado es marzo de nuevo por Fallas.
 
 ## Gráficos de dispersión que representan el nivel sonoro comparándolo en distintos años.
 
@@ -315,7 +306,7 @@ P3 %>% ggplot(aes(x = LAeq_2021,y = LAeq_2022 )) + geom_point() + geom_smooth(me
 P3 %>% ggplot(aes(x = LAeq_2020,y = LAeq_2022 )) + geom_point() + geom_smooth(method = lm,se = FALSE )
 ```
 
-De estos tres gráficos,podemos sacar como conclusión que en el año 2022 es cuando mayor nivel sonoro ha habido,si lo comparamos sobretodo con 2020 ya que en esa gráfica es donde mayor diferencia hemos encontrado.También,ocurre algo similar con 2021 pero no a tal magnitud.Esto se debe,a que el confinamiento en 2020 tuvo un importante efecto en la sonoridad de las calles pero poco a poco,se está recuperando ese ruido gracias a las ausencias de restricciones por la pandemia de Covid-19.
+De estos tres gráficos,podemos sacar como conclusión que en el año 2022 es cuando mayor nivel sonoro ha habido, si lo comparamos sobretodo con 2020 ya que en esa gráfica es donde mayor diferencia hemos encontrado.También,ocurre algo similar con 2021 pero no a tal magnitud.Esto se debe,a que el confinamiento en 2020 tuvo un importante efecto en la sonoridad de las calles pero poco a poco,se está recuperando ese ruido gracias a las ausencias de restricciones por la pandemia de Covid-19.
 
 ```{r}
 #Vamos a realizar un estudio de la evolución del ruido en época de fallas, y compararemos los resultados obtenidos con el gráfico anterior.
@@ -332,3 +323,24 @@ newdf_fallas <- cbind(newdf_fallas, dia)
 ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes(color=Calle))
 ```
 
+# Cuestuiones relacionadas con los datos sobre el ruido.
+
+## Cuestión 1.
+
+### ¿Puede verse el impacto de la pandemia producida por la COVID-19 en los niveles de ruido?
+
+Efectivamente, especialmente por la noche. Una posible explicación de lo sucedido podrían serlas restricciones de movilidad y ocio nocturo impuestas por el Gobierno de España a fin de reducir la incidencia provocando que las personas no salgán de sus domicilios.
+
+## Cuestión 2.
+
+### ¿Existen diferencias en los niveles de ruido respecto del tramo horario?
+
+Si, como era de esperar el tramo horario donde el ruido es inferior es el tramo de las 23h-7h, por encima el tramo de las 19h-23h y como tramo con mayor media de ruido quedaría el tramo de las 7h-19h.
+
+## Cuestión 3.
+
+### ¿Hay variación en los niveles de ruido en época de fallas respecto del resto del año?
+
+Sí, en época de fallas podemos observar un aumento considerable en los niveles de ruido, esto puede deverse en gran parta a la tradición pirotécnica
+
+## Cuestión 4.
