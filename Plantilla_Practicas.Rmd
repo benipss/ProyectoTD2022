@@ -271,7 +271,7 @@ newdf_fallas <- newdf_fallas %>% select(-"Fecha")
 
 newdf_fallas <- cbind(newdf_fallas, dia)
 
-ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_barline(aes(color=Calle))
+ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes(color=Calle))
 ```
 
 ## Índice medio de ruido día-tarde-noche a lo largo de los meses en los distintos años registrados.
@@ -323,6 +323,25 @@ newdf_fallas <- cbind(newdf_fallas, dia)
 ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes(color=Calle))
 ```
 
+```{r}
+startdate <- as.Date("2021-01-01") 
+enddate <- as.Date("2021-12-31")
+
+sonido_cont <- fusion %>% select(dateObserved,LAeq)
+
+mes <- sonido_cont %>% select("dateObserved") %>% separate(dateObserved,c("año","mes","dia"),sep = "-") %>% select(mes) 
+
+dia <- sonido_cont %>% select("dateObserved") %>% separate(dateObserved,c("año","mes","dia"),sep = "-") %>% select(dia) 
+
+sonido_cont <- cbind(dia, mes, sonido_cont)
+
+sonido_cont <- sonido_cont[which(sonido_cont$dateObserved >= startdate &
+           sonido_cont$dateObserved <= enddate),] %>% select(dia, mes, LAeq)
+
+ggplot(data = sonido_cont, aes(x = mes, y = LAeq, group = dia)) + geom_count(aes(color = mes))
+```
+
+
 # Cuestuiones relacionadas con los datos sobre el ruido.
 
 ## Cuestión 1.
@@ -341,6 +360,6 @@ Si, como era de esperar el tramo horario donde el ruido es inferior es el tramo 
 
 ### ¿Hay variación en los niveles de ruido en época de fallas respecto del resto del año?
 
-Sí, en época de fallas podemos observar un aumento considerable en los niveles de ruido, esto puede deverse en gran parta a la tradición pirotécnica
+Sí, en época de fallas podemos observar un aumento considerable en los niveles de ruido, esto puede deverse en gran parte a la tradición pirotécnica
 
 ## Cuestión 4.
