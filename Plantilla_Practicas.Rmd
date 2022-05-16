@@ -79,22 +79,24 @@ Breve introducción donde se indica el contenido del documento:
 # Importacion de los datos.
 
 ```{r}
-ruta <- "data/"
 #Vector con el nombre de las calles:
-nombre_calles <- c()
+nombre_calles <- c("calle_Puerto_Rico_21","calle_General_Prim","calle_cuba_3","calle_cadiz_3","calle_Salvador_Abril","calle_Doctor_Serrano_21","calle_cadiz_16","calle_sueca_61","calle_sueca_denia","calle_Carles_Cervera_34","calle_sueca_32","calle_sueca_2","calle_Carles_Cevera","calle_Vivons_Chaflan")
+
+#Leectura de los ficheros.
+ruta <- "data/"
 f <- list.files(path= "./data", pattern = "csv$") 
 fusion <- read_csv(paste(ruta,f[1], sep = ""), 
      col_types = cols(`_id` = col_integer(), 
          LAeq = col_number(), LAeq_d = col_number(), 
          LAeq_den = col_number(), LAeq_e = col_number(), 
-         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))%>% mutate(calle = 1)
+         LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d")))%>% mutate(calle = nombre_calles[1])
      
 for (i in 2:length(f)){
 fichero2 <- read_csv(paste(ruta,f[i], sep = ""),
        col_types = cols(`_id` = col_integer(), 
            LAeq = col_number(), LAeq_d = col_number(), 
            LAeq_den = col_number(), LAeq_e = col_number(), 
-           LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d"))) %>% mutate(calle = i) 
+           LAeq_n = col_number(), dateObserved = col_date(format = "%Y-%m-%d"))) %>% mutate(calle = nombre_calles[i]) 
 
 fusion <- union(fusion, fichero2)
  
@@ -271,7 +273,7 @@ newdf_fallas <- newdf_fallas %>% select(-"Fecha")
 
 newdf_fallas <- cbind(newdf_fallas, dia)
 
-ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_barline(aes(color=Calle))
+ggplot(data = newdf_fallas, aes(x=dia, y=LAeq_den, group=Calle)) + geom_line(aes(color=Calle))
 ```
 
 ## Índice medio de ruido día-tarde-noche a lo largo de los meses en los distintos años registrados.
