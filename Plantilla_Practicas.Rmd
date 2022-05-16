@@ -343,7 +343,6 @@ sonido_cont <- sonido_cont[which(sonido_cont$dateObserved >= startdate &
 ggplot(data = sonido_cont, aes(x = mes, y = LAeq, group = dia)) + geom_count(aes(color = mes))
 ```
 
-
 # Cuestuiones relacionadas con los datos sobre el ruido.
 
 ## Cuestión 1.
