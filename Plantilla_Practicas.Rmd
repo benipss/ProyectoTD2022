@@ -380,3 +380,11 @@ Según el nivel de sonoridad en las calles,este suele ser muy alto en el mes de 
 ### De los tres años que se contabilizan, ¿Cuál es el menos ruidoso?
 
 El años menos ruidoso es 2020,cosa que de nuevo se justifica debido a que en ese año hubo el confinamiento aunque no esté contabilizado aquí,pero después de eso se impusieron medidas que no nos permitieron hacer la misma cantidad de ruido que antes de la pandemia.
+
+
+## Conclusión del trabajo
+
+Como conlusión final,podemos decir que en este trabajo hemos aprendido a hacer todo lo que llevamos viendo a lo largo de la asignatura pero intentando hacerlo de la forma más eficiente posible.Por ejemplo,en la carga y fusión de los ficheros de datos.
+Refiriéndonos ahora al conjunto de datos que hemos analizado,sacamos que los niveles de ruido pueden aportarnos mucha más información que simplemente la cantidad de ruido que hay en una calle.Esto se ve reflejado en que,con estas medidas podemos darnos cuenta de cómo va llendo la sociedad ya que si hay mucho ruido signfica que podemos estar en un ambiente festivo pero cuando no lo hay,es porque puede que la gente no esté saliendo como ha ocurrido con la pandemia provocada por el Covid-19.
+
+## ¡Esperemos que os haya gustado!
